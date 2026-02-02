@@ -1,71 +1,72 @@
-#include<math.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-int stack[50];
-char postfix[50],infix[50];
-int size=-1;
-void push(int c)
+#include<iostream>
+#define max 20
+using namespace std;
+class stack
 {
-   if(size==49)
-   {
-      printf("stack overflow!!!\n");
-   }
-   size++;
-   stack[size]=c;
+	int a[max];
+	int top;
+	public:
+		stack()
+		{
+			top=-1;
+		}
+		void push(int x);
+		char pop();
+		void display();
+};
+void stack::push(int x)
+{
+	if(top==max-1)
+		cout<<"Stack is Full"<<endl;
+	else
+	{
+		top++;
+		a[top]=x;
+	}
 }
-int pop()
+char stack::pop()
 {
-   int c;
-      if(size==-1)
-      {
-         printf("stack underflow!!!\n");
-      }
-   c=stack[size];
-   size=size-1;
-   return c;
+	if(top==-1)
+		cout<<"Stack is Empty"<<endl;
+	else
+	{
+		int data=a[top];
+		a[top]=0;
+		top--;
+		return data;
+	}
 }
-void evaluate()
+void stack::display()
 {
-   int a,b,c;
-   int i;
-   for(i=0;i<strlen(postfix);i++);
-   {
-      if(postfix[i]>='0' && postfix[i]<='9')
-         push(postfix[i]-'0');
-      else
-      {
-         a=pop();
-         b=pop();
-         switch(postfix[i])
-         {
-            case '+':
-               push(a+b);
-               break;
-            case '-':
-               push(b-a);
-               break;
-            case '*':
-               push(b*a);
-               break;
-            case '/':
-               push(b/a);
-               break;
-            case '^':
-               c=pow(b,a);
-            	push(c);
-               break;
-         }
-      }
-   }
+	cout<<"The answer is "<<a[top];
 }
 int main()
 {
-   int a;
-   printf("enter the postfix expression: ");
-   scanf("%s",&postfix);
-   evaluate();
-   a=pop();
-   printf("\nthe evaluated value is %d",a);
-   return 0;
+	stack s;
+	int x,y;
+	char e[20];
+	cout<<"Enter the Expression:";
+	cin>>e;
+	for(int i=0;e[i]!='\0';i++)
+	{
+		if(e[i]=='1'||e[i]=='2'||e[i]=='3'||e[i]=='4'||e[i]=='5'||e[i]=='6'||e[i]=='7'||e[i]=='8'||e[i]=='9'||e[i]=='0')
+		{
+			s.push(e[i]-'0');
+		}
+		else
+		{
+			x=s.pop();
+			y=s.pop();
+			if(e[i]=='+')
+				s.push(x+y);
+			else if(e[i]=='-')
+				s.push(x-y);
+			else if(e[i]=='*')
+				s.push(x*y);
+			else if(e[i]=='/')
+				s.push(x/y);
+		}
+	}
+	s.display();
+	return 0;
 }
